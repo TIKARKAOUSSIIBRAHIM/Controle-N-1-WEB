@@ -3,7 +3,7 @@ const app=express();
 const productrouter=require("./routes/products.routes");
 const mongoose =require("mongoose");
 const cors =require("cors");
-
+const categoryRouter=require("./routes/categories.routes");
 
 
 const URL="mongodb+srv://sebastien:MG9mdudgNBdZJyd1@cluster0.bgnnhev.mongodb.net/db_catalogue?retryWrites=true&w=majority";
@@ -14,3 +14,4 @@ mongoose.connect(URL)
 app.use(cors());
 app.use(express.json());
 app.use("/products",productrouter);
+app.use("/categories",categoryRouter)

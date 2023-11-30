@@ -1,42 +1,47 @@
 import { useEffect, useState } from "react";
-import { deleteProductByID, getAllProducts } from "../services/product.services";
-import { Link } from "react-router-dom";
+import { addProduct, getProductsById, updateProduct } from "../services/product.services";
+import { Link, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-export function ProductList(){
-    const [products,setProducts]=useState([]);
-    useEffect(()=>{
-        fetchProducts();
-    },[])
-    
-    async function fetchProducts(){
-        const res=await getAllProducts()
-        setProducts(res.data);
+export function ProductEdit(){
+    const [name,setName]=useState("");
+    const [price, setPrice] = useState(0);
+    const navigate=useNavigate();
+    const {id}=useParams();
+
+    useEffect( ()=>{
+      fetchProduct();
+    },[]
+
+    );
+
+    async function fetchProduct(){
+     const resp = await getProductsById(id);
+     const p=resp.data;
+     setName(p.name);
+     setPrice(p.price);
     }
-    async function deleteProduct(id){
-        const res=await deleteProductByID(id)
-        fetchProducts();
+
+    function handlForm(event){
+        event.preventDefault();
+        const p={"_id":id,"name":name,"price":price}
+        updateProduct(p);
+        navigate("/products");
     }
 
     return(
         <>
-        <table className="table table-bordered table-striped">
-        <thead className="bg-light">
-          <tr>
-            <th>ID</th>
-            <th>Prix</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((elem,index)=><tr key={index}>
-          <td>{elem.name}</td>
-          <td>{elem.price}</td>
-          <td><button className="btn btn-danger" onClick={()=>deleteProduct(elem._id)}>supprimer</button></td>
-            </tr>)}
-        </tbody>
-      </table>
-      <Link to={"/products/new"}>Nouveau produit</Link>
-      </>
+        <form onSubmit={(e)=>handlForm(e)}>
+        <label className="form-label" htmlFor="name">Nom :</label>
+        <input className="form-control" type='text'  id='name' value={name} onChange={(e)=>setName(e.target.value)} />
+        <br/>
+        <label className="form-label" htmlFor="price">Prix :</label>
+        <input className="form-control" type='number'  id='price=' value={price} onChange={(e)=>setPrice(e.target.value)} />
+        <br/>
+        <input className="btn btn-primary" type="submit" value={"Enregistrer"} />
+        <input className="btn btn-danger" type="reset" value={"Annuler"} /> 
+        </form>
 
-    );
+        </>
+        );
 }

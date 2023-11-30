@@ -32,9 +32,13 @@ export function ProductList(){
           <td>{elem.name}</td>
           <td>{elem.price}</td>
           <td><button className="btn btn-danger" onClick={()=>deleteProduct(elem._id)}>supprimer</button></td>
+          <td>
+            <button><Link to={`/products/edit/${elem._id}`}>Editer</Link></button>
+          </td>
             </tr>)}
         </tbody>
       </table>
+
       <Link to={"/products/new"}>Nouveau produit</Link>
       </>
 
