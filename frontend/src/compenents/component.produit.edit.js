@@ -22,10 +22,10 @@ export function ProductEdit(){
      setPrice(p.price);
     }
 
-    function handlForm(event){
+    async function handlForm(event){
         event.preventDefault();
         const p={"_id":id,"name":name,"price":price}
-        updateProduct(p);
+        await updateProduct(p);
         navigate("/products");
     }
 

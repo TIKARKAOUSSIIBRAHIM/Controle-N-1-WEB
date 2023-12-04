@@ -6,6 +6,7 @@ import { getAllCategories } from "../services/categorie.service";
 export function ProductNew(){
     const [name,setName] = useState("");
     const [price,setPrice] = useState(0);
+    const [selectedCat, setSelectedCat]=useState(0);
     const [categories, setCategories]=useState([]);
      
     
@@ -17,11 +18,12 @@ export function ProductNew(){
     async function fetchCategories(){
         const res=await getAllCategories();
         setCategories(res.data.categories);
+        console.log(res.data)
 
     }
     async function handlForm(event){
         event.preventDefault(); 
-        const p={"name":name,"price":price}
+        const p={"name":name,"price":price,"category":categories[selectedCat]}
         await addProduct(p);
         navigate("/products");
       
@@ -36,8 +38,8 @@ export function ProductNew(){
         <input className="form-control" type='number'  id='price=' onChange={(e)=>setPrice(e.target.value)} />
         <br/>
         <label className="form-label" >Catégorie :</label>
-        <select className="form-control" >
-        {categories.map((cat)=><option key={cat._id} value={cat._id}>{cat.name}</option>)}
+        <select className="form-control" onChange={(e)=>setSelectedCat(e.target.value)} >
+        {categories.map((cat,index)=><option key={index} value={index}>{cat.name}</option>)}
         </select>
 
 

@@ -1,8 +1,13 @@
 const Product = require("../models/Product") ;
 
 async function getAllProducts(req,res){
-     const products = await Product.find();
-     res.json(products);
+   try {
+      const products = await Product.find().populate("category");
+      res.json(products);
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
 }
 
 async function getProductsbyId(req,res){

@@ -18,19 +18,24 @@ export function ProductList(){
     }
 
     return(
+        
         <>
         <table className="table table-bordered table-striped">
         <thead className="bg-light">
           <tr>
             <th>ID</th>
             <th>Prix</th>
+            <th>Catégorie</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
+          
           {products.map((elem,index)=><tr key={index}>
+          {console.log(elem)}
           <td>{elem.name}</td>
           <td>{elem.price}</td>
+          <td>{elem.category.name}</td>
           <td><button className="btn btn-danger" onClick={()=>deleteProduct(elem._id)}>supprimer</button></td>
           <td>
             <button><Link to={`/products/edit/${elem._id}`}>Editer</Link></button>
