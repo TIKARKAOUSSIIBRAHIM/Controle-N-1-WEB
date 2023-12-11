@@ -1,9 +1,8 @@
-const Category=require("../models/Category");
-
+const catalogServices=require("../services/catalog.services");
 async function getAllCategories(req,res){
     try{      
-        const categories = await Category.find();
-        res.status(200).json({categories});
+        const categories = await catalogServices.findCategories();
+        res.status(200).json(categories);
 
     }catch(error){
         res.status(500).send("erreur dans le serveur");
@@ -12,7 +11,7 @@ async function getAllCategories(req,res){
 
 async function addCategory(req,res){
    try{
-       await   Category.create(req.body);
+       const cat=await catalogServices.saveCategory(req.body);
        res.status(201).json({message:"category ajouter"})
    }catch(error){
     res.status(500).send("erreur dans le serveur");

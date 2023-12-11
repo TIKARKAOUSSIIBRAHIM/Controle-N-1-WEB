@@ -17,7 +17,7 @@ export function ProductNew(){
     ,[]);
     async function fetchCategories(){
         const res=await getAllCategories();
-        setCategories(res.data.categories);
+        setCategories(res.data);
         console.log(res.data)
 
     }

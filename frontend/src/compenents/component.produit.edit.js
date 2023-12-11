@@ -16,7 +16,9 @@ export function ProductEdit(){
     );
 
     async function fetchProduct(){
+
      const resp = await getProductsById(id);
+     
      const p=resp.data;
      setName(p.name);
      setPrice(p.price);

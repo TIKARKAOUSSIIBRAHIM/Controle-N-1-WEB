@@ -1,8 +1,8 @@
-const Product = require("../models/Product") ;
+const catalogServices = require("../services/catalog.services") ;
 
 async function getAllProducts(req,res){
    try {
-      const products = await Product.find().populate("category");
+      const products = await catalogServices.findProducts()
       res.json(products);
   } catch (err) {
       console.error(err);
@@ -12,28 +12,35 @@ async function getAllProducts(req,res){
 
 async function getProductsbyId(req,res){
     const idP =req.params.id;
-    const product= await  Product.findById(idP);
+    const product= await  catalogServices.findProductsbyId(idP);
     res.json(product)
 
 }
 
 async function addProduct(req,res){
-   const product= await Product.create(req.body);    
-   res.json(product);
+   try{
+   const product= await catalogServices.saveCategory(req.body);
+   res.status(201).json(product);
+
+}catch(error){
+   res.status(500).send("erreur d'ajout");
+}
     
 }
 
 async function deleteProductByid(req,res){
-  const idp =req.params.id;
-  const product=await Product.findByIdAndDelete(idp);
+  const idP =req.params.id;
+  const product=await catalogServices.removeProductByid(idP);
   res.json(product);
 
 }
 
 async function updateProduct(req,res){
    const idP =req.params.id;
-   const product=await Product.findByIdAndUpdate(idP,req.body);
-   res.json(product);
+   
+   const product=await catalogServices.updateProduct(idP,req.body);
+   res.status(200).json(product);
+   
 
 }
 
